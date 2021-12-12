@@ -1,11 +1,21 @@
 #!/usr/bin/python3
 
+"""
+Count the Source Lines of Code (SLOC) without blank lines and comments in a single source file.
+
+CLI based tool for manual use or automation in a CI context for static code analysis.
+
+Supported comment styles:
+  Block comments (inline, multiline):       /* ... */
+  Line comments  (including inline):        // ...
+"""
+
 import argparse
 import re
 import sys
 
 __author__ = 'cdjaw'
-__version__ = '0.1'
+__version__ = '0.2'
 
 
 def parse_arguments():
@@ -15,7 +25,8 @@ def parse_arguments():
     :rtype: argparse.Namespace
     """
     parser = argparse.ArgumentParser(
-        description='Count the Source Lines of Code (SLOC) without blank lines and comments.'
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
         'source_file',
@@ -31,10 +42,12 @@ def parse_arguments():
 
 
 def filter_source_lines_of_code(file_contents: str = ''):
-    """Return source lines of code after filtering comments and blank lines.
+    """Return only source lines of code without comments and blank lines.
+
+    Limitations: The filter might undesirably strip comment-like phrases that are wrapped in a larger structure.
 
     :param str file_contents: Full source file contents to be filtered
-    :return: Source lines of code
+    :return: Source lines of code without line endings
     :rtype: list[str]
     """
     source_lines_of_code = []
@@ -47,6 +60,10 @@ def filter_source_lines_of_code(file_contents: str = ''):
 
 
 def main():
+    """Count source lines of code in input source code file and print result to stdout.
+
+    :return: System error code
+    """
     arguments = parse_arguments()
     file_contents = arguments.source_file.read()
     source_lines_of_code = filter_source_lines_of_code(file_contents)
