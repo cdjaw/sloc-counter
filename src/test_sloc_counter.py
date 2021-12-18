@@ -6,7 +6,7 @@ import pytest
 import sloc_counter
 
 __author__ = 'cdjaw'
-__version__ = '0.3'
+__version__ = '0.4'
 
 
 @pytest.fixture
@@ -51,7 +51,6 @@ def test_filter_source_lines_of_code(
     absolute_source_file_path = os.path.join(test_files_base_path, source_code_file)
     with open(absolute_source_file_path) as input_file:
         source_lines_of_code = sloc_counter.filter_source_lines_of_code(input_file.read())
-        assert len(source_lines_of_code) == sloc_count
     assert len(source_lines_of_code) == sloc_count
     if cpp_code_is_original:
         assert source_lines_of_code == hello_world_cpp_source_lines
